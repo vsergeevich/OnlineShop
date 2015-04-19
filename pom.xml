@@ -9,7 +9,7 @@
         <module>BusinessInterfaces</module>
         <module>Dao</module>
         <module>SwingClient</module>
-        <module>OnlineShop</module>
+        <module>OnlineShopWeb</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

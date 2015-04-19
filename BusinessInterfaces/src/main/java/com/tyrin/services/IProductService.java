@@ -22,14 +22,27 @@ public interface IProductService {
 
     public void deleteProduct(int prodId);
 
-    public List<Product> getProductByCategory(int catId);
-
-    public List<Product> getProductByManufacturer(int manId);
-
     public List<Product> searchProduct(String mask);
 
-    public List<Product> searchProductOnPrice(int low, int high);
+    public List<Product> getAllProduct(int page, int pageSize);
 
     public List<Product> getAllProduct();
 
+    public List<Product> getProductsByPrice(int low, int high);
+
+    public List<Product> getProductsByPrice(int page, int pageSize, int low, int high);
+
+    public List<Product> getProductByCategory(int categoryId);
+
+    public List<Product> getProductsByCategory(int page, int pageSize, int categoryId);
+
+    public List<Product> getProductByManufacturer(int manId);
+
+    public List<Product> getProductsByManufacturer(int page, int pageSize, int manufacturerId);
+    
+    public List<Product> getProductsByCategoryAndManufacturer(int page, int pageSize, int categoryId, int manId);
+    
+    public List<Product> getProductsByCategoryAndPrice(int page, int pageSize, int categoryId, int[] priceRange);
+
+    public List<Product> getProductByCategoryWithChildren(int catId);
 }

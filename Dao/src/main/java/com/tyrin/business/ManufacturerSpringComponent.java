@@ -5,24 +5,24 @@
  */
 package com.tyrin.business;
 
-import com.tyrin.cache.CacheManufacturers;
-import com.tyrin.cache.CacheProducts;
 import com.tyrin.beans.Manufacturer;
 import com.tyrin.services.IManufacturerService;
 import com.tyrin.dao.ManufacturerDao;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Tyrin V. S.
  */
-@Component
+@Service
 public class ManufacturerSpringComponent implements IManufacturerService {
 
     @Autowired
@@ -34,7 +34,6 @@ public class ManufacturerSpringComponent implements IManufacturerService {
     public synchronized void addManufacturer(Manufacturer man) {
         manufacturerDao.addManufacturer(man);
         log.info("Manufacturer " + man.getName()+ " is added to db");
-        CacheManufacturers.cleanCache();
     }
 
     @Override
@@ -42,8 +41,6 @@ public class ManufacturerSpringComponent implements IManufacturerService {
     public synchronized void deleteManufacturer(int manId) {
         manufacturerDao.deleteManufacturer(manId);
         log.info("Manufacturer " + manId + " is deleted from db");
-        CacheManufacturers.cleanCache();
-        CacheProducts.cleanCache();
     }
 
     @Override
@@ -56,12 +53,20 @@ public class ManufacturerSpringComponent implements IManufacturerService {
     public synchronized void updateManufactutrer(Manufacturer man) {
         manufacturerDao.updateManufactutrer(man);
         log.info("Manufacturer " + man.getName()+ " is updated");
-        CacheManufacturers.cleanCache();
-        CacheProducts.cleanCache();
     }
 
     @Override
     public synchronized List<Manufacturer> getAllManufacturer() {
         return manufacturerDao.getAllManufacturer();
+    }
+    
+    @Override
+    public Map<Integer, String> mapIndexes() {
+            Map<Integer, String> mapIndex = new HashMap<>();
+            List<Manufacturer> list = manufacturerDao.getAllManufacturer();
+            for (Manufacturer man : list) {
+                mapIndex.put(man.getId(), man.getName());
+        }
+        return mapIndex;
     }
 }

@@ -11,6 +11,7 @@ import com.tyrin.services.IManufacturerService;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -122,5 +123,10 @@ public class ManufacturerRestClient implements IManufacturerService {
         } catch (RestClientException | DBException e) {
             throw new DBException(e.getMessage());
         }
+    }
+
+    @Override
+    public Map<Integer, String> mapIndexes() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

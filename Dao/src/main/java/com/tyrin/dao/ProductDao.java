@@ -17,15 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Tyrin V. S.
  */
-@Component
+@Repository
 public class ProductDao {
 
     @Autowired
@@ -52,11 +52,16 @@ public class ProductDao {
         }
     }
 
+    public List<Product> getAllProduct(int page, int pageSize) {
+        String sql = "SELECT prod_id, prod_cat_id, prod_man_id, prod_name, prod_price, prod_desc, prod_avail, prod_image "
+                + "FROM Product ORDER BY prod_id LIMIT ? OFFSET ?";
+        return template.query(sql, new ProductMapper(), pageSize, (page - 1) * pageSize);
+    }
+
     public List<Product> getAllProduct() {
-        return template.query(
-                "SELECT prod_id, prod_cat_id, prod_man_id, prod_name, prod_price, prod_desc, prod_avail, prod_image "
-                + "FROM Product ORDER BY prod_id",
-                new ProductMapper());
+        String sql = "SELECT prod_id, prod_cat_id, prod_man_id, prod_name, prod_price, prod_desc, prod_avail, prod_image "
+                + "FROM Product ORDER BY prod_id";
+        return template.query(sql, new ProductMapper());
     }
 
     public Product getProduct(int prodId) {
@@ -104,11 +109,24 @@ public class ProductDao {
                 new ProductMapper(), man_id);
     }
 
+    public List<Product> getProductByManufacturer(int page, int pageSize, int man_id) {
+        return template.query(
+                "SELECT prod_id, prod_cat_id, prod_man_id, prod_name, prod_price, prod_desc, prod_avail, prod_image "
+                + "FROM Product WHERE prod_man_id = ?  LIMIT ? OFFSET ?",
+                new ProductMapper(), man_id, pageSize, (page - 1) * pageSize);
+    }
+
     public List<Product> searchProductOnPrice(int low, int high) {
         String sql = "SELECT prod_id, prod_cat_id, prod_man_id, prod_name, prod_price, "
                 + "prod_desc, prod_avail, prod_image FROM Product WHERE prod_price BETWEEN ? AND ?";
-
         return template.query(sql, new ProductMapper(), low, high);
+
+    }
+
+    public List<Product> searchProductOnPrice(int page, int pageSize, int low, int high) {
+        String sql = "SELECT prod_id, prod_cat_id, prod_man_id, prod_name, prod_price, "
+                + "prod_desc, prod_avail, prod_image FROM Product WHERE prod_price BETWEEN ? AND ? LIMIT ? OFFSET ?";
+        return template.query(sql, new ProductMapper(), low, high, pageSize, (page - 1) * pageSize);
 
     }
 
@@ -155,6 +173,96 @@ public class ProductDao {
                     "SELECT prod_id, prod_cat_id, prod_man_id, prod_name, prod_price, prod_desc, prod_avail, prod_image "
                     + "FROM Product WHERE prod_cat_id = ?",
                     new ProductMapper(), i);
+
+            for (Product p : listProdByCat) {
+                listProd.add(p);
+            }
+        }
+        return listProd;
+    }
+
+    public List<Product> getProductByCategoryAndManufacturer(int catId, int manId) {
+        String sql = "SELECT DISTINCT t1.id as cat\n"
+                + "FROM Category t1\n"
+                + "LEFT JOIN Category t2 ON t1.id = t2.parent_id\n"
+                + "LEFT JOIN Category t3 ON t2.id = t3.parent_id\n"
+                + "WHERE t1.id = ? "
+                + "UNION\n"
+                + "SELECT DISTINCT t2.id as cat\n"
+                + "FROM Category t1\n"
+                + "LEFT JOIN Category t2 ON t1.id = t2.parent_id\n"
+                + "LEFT JOIN Category t3 ON t2.id = t3.parent_id\n"
+                + "WHERE t1.id = ? "
+                + "UNION\n"
+                + "SELECT DISTINCT t3.id as cat\n"
+                + "FROM Category t1\n"
+                + "JOIN Category t2 ON t1.id = t2.parent_id\n"
+                + "JOIN Category t3 ON t2.id = t3.parent_id\n"
+                + "WHERE t1.id = ? ";
+        ArrayList<Integer> listCategoriesWithChildren = template.queryForObject(sql,
+                new RowMapper<ArrayList<Integer>>() {
+                    @Override
+                    public ArrayList<Integer> mapRow(ResultSet rs, int i) throws SQLException {
+                        ArrayList<Integer> listId = new ArrayList<>();
+                        do {
+                            listId.add(rs.getInt("cat"));
+                        } while (rs.next());
+
+                        return listId;
+                    }
+                }, catId, catId, catId);
+
+        List<Product> listProd = new LinkedList<>();
+        for (int i : listCategoriesWithChildren) {
+            List<Product> listProdByCat = template.query(
+                    "SELECT prod_id, prod_cat_id, prod_man_id, prod_name, prod_price, prod_desc, prod_avail, prod_image "
+                    + "FROM Product WHERE prod_cat_id = ? AND prod_man_id = ?",
+                    new ProductMapper(), i, manId);
+
+            for (Product p : listProdByCat) {
+                listProd.add(p);
+            }
+        }
+        return listProd;
+    }
+
+    public List<Product> getProductByCategoryAndPrice(int catId, double low, double high) {
+        String sql = "SELECT DISTINCT t1.id as cat\n"
+                + "FROM Category t1\n"
+                + "LEFT JOIN Category t2 ON t1.id = t2.parent_id\n"
+                + "LEFT JOIN Category t3 ON t2.id = t3.parent_id\n"
+                + "WHERE t1.id = ? "
+                + "UNION\n"
+                + "SELECT DISTINCT t2.id as cat\n"
+                + "FROM Category t1\n"
+                + "LEFT JOIN Category t2 ON t1.id = t2.parent_id\n"
+                + "LEFT JOIN Category t3 ON t2.id = t3.parent_id\n"
+                + "WHERE t1.id = ? "
+                + "UNION\n"
+                + "SELECT DISTINCT t3.id as cat\n"
+                + "FROM Category t1\n"
+                + "JOIN Category t2 ON t1.id = t2.parent_id\n"
+                + "JOIN Category t3 ON t2.id = t3.parent_id\n"
+                + "WHERE t1.id = ? ";
+        ArrayList<Integer> listCategoriesWithChildren = template.queryForObject(sql,
+                new RowMapper<ArrayList<Integer>>() {
+                    @Override
+                    public ArrayList<Integer> mapRow(ResultSet rs, int i) throws SQLException {
+                        ArrayList<Integer> listId = new ArrayList<>();
+                        do {
+                            listId.add(rs.getInt("cat"));
+                        } while (rs.next());
+
+                        return listId;
+                    }
+                }, catId, catId, catId);
+
+        List<Product> listProd = new LinkedList<>();
+        for (int i : listCategoriesWithChildren) {
+            List<Product> listProdByCat = template.query(
+                    "SELECT prod_id, prod_cat_id, prod_man_id, prod_name, prod_price, prod_desc, prod_avail, prod_image "
+                    + "FROM Product WHERE prod_cat_id = ? AND prod_price BETWEEN ? AND ?",
+                    new ProductMapper(), i, low, high);
 
             for (Product p : listProdByCat) {
                 listProd.add(p);

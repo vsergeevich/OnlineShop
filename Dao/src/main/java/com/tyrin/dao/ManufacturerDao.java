@@ -15,11 +15,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Repository;
 /**
  *
  * @author Tyrin V. S.
  */
-@Component
+@Repository
 public class ManufacturerDao {
 
     @Autowired

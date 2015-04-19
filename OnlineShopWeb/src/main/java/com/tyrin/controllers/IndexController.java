@@ -5,13 +5,11 @@
  */
 package com.tyrin.controllers;
 
-import com.tyrin.cache.CacheCategories;
-import com.tyrin.cache.CacheManufacturers;
 import com.tyrin.beans.Category;
 import com.tyrin.beans.Product;
-import com.tyrin.cache.CacheProducts;
+import com.tyrin.services.ICategoryService;
+import com.tyrin.services.IManufacturerService;
 import com.tyrin.services.IProductService;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.logging.Log;
@@ -36,27 +34,27 @@ import org.springframework.web.servlet.ModelAndView;
 public class IndexController {
 
     private final static int PAGE_SIZE = 12;
+    private static final Log log = LogFactory.getLog(IndexController.class);
     @Autowired
     @Qualifier("productSpringComponent")
     IProductService prodComponent;
     @Autowired
-    CacheProducts cacheProd;
+    @Qualifier("categorySpringComponent")
+    ICategoryService categoryComponent;
     @Autowired
-    CacheManufacturers cacheMan;
-    @Autowired
-    CacheCategories cacheCat;
-    private static final Log log = LogFactory.getLog(IndexController.class);
+    @Qualifier("manufacturerSpringComponent")
+    IManufacturerService manufacturerComponent;
 
     @RequestMapping(value = "/index.htm", method = RequestMethod.GET)
     public String allProducts(ModelMap model) {
         log.info("GET-request on url */index.htm");
         log.info("Loading main page");
-        model.addAttribute("manMap", cacheMan.mapIndexes());
-        model.addAttribute("catMap", cacheCat.mapIndexes());
-        model.addAttribute("listMan", cacheMan.allManufacturers());
-        model.addAttribute("catTreeMap", cacheCat.getTreeCategories(0));
+        model.addAttribute("manMap", manufacturerComponent.mapIndexes());
+        model.addAttribute("catMap", categoryComponent.mapIndexes());
+        model.addAttribute("listMan", manufacturerComponent.getAllManufacturer());
+        model.addAttribute("catTreeMap", categoryComponent.buildTreeForWeb(0));
         model.addAttribute("catLabel", new Category());
-        model.addAttribute("list", cacheProd.getCachedProducts(1, PAGE_SIZE));
+        model.addAttribute("list", prodComponent.getAllProduct(1, PAGE_SIZE));
         model.addAttribute("page", 1);
         model.addAttribute("moreGoods", "/WebShop/all-products/");
         String view = "index";
@@ -69,9 +67,9 @@ public class IndexController {
         log.info("Load goods on page " + page);
         ModelAndView mav = new ModelAndView();
         mav.setViewName("showcase");
-        mav.addObject("manMap", cacheMan.mapIndexes());
-        mav.addObject("catMap", cacheCat.mapIndexes());
-        List<Product> list = cacheProd.getCachedProducts(page + 1, PAGE_SIZE);
+        mav.addObject("manMap", manufacturerComponent.mapIndexes());
+        mav.addObject("catMap", categoryComponent.mapIndexes());
+        List<Product> list = prodComponent.getAllProduct(page + 1, PAGE_SIZE);
         mav.addObject("page", page);
         mav.addObject("moreGoods", "/WebShop/all-products/");
         mav.addObject("list", list);
@@ -85,8 +83,8 @@ public class IndexController {
         ModelAndView mav = new ModelAndView();
         List<Product> list = prodComponent.searchProduct(request);
         mav.setViewName("showcase");
-        mav.addObject("manMap", cacheMan.mapIndexes());
-        mav.addObject("catMap", cacheCat.mapIndexes());
+        mav.addObject("manMap", manufacturerComponent.mapIndexes());
+        mav.addObject("catMap", categoryComponent.mapIndexes());
         mav.addObject("list", list);
         return mav;
     }
@@ -96,11 +94,11 @@ public class IndexController {
         log.info("GET-request on url */manufacturer/" + id);
         log.info("Filtering by manufacturer id =" + id);
         ModelAndView mav = new ModelAndView();
-        List<Product> list = cacheProd.getProductsByCategoryAndManufacturer(page, PAGE_SIZE, catId, id);
+        List<Product> list = prodComponent.getProductsByCategoryAndManufacturer(page, PAGE_SIZE, catId, id);
         mav.addObject("page", page);
         mav.setViewName("showcase");
-        mav.addObject("manMap", cacheMan.mapIndexes());
-        mav.addObject("catMap", cacheCat.mapIndexes());
+        mav.addObject("manMap", manufacturerComponent.mapIndexes());
+        mav.addObject("catMap", categoryComponent.mapIndexes());
         mav.addObject("list", list);
         mav.addObject("moreGoods", "/WebShop/manufacturer/" + id);
         return mav;
@@ -111,10 +109,10 @@ public class IndexController {
         log.info("GET-request on url */price/" + low + "/" + high);
         log.info("Filtering by price range: " + low + " to " + high);
         ModelAndView mav = new ModelAndView();
-        List<Product> list = cacheProd.getProductsByCategoryAndPrice(page, PAGE_SIZE, catId, new int[]{low, high});
+        List<Product> list = prodComponent.getProductsByCategoryAndPrice(page, PAGE_SIZE, catId, new int[]{low, high});
         mav.setViewName("showcase");
-        mav.addObject("manMap", cacheMan.mapIndexes());
-        mav.addObject("catMap", cacheCat.mapIndexes());
+        mav.addObject("manMap", manufacturerComponent.mapIndexes());
+        mav.addObject("catMap", categoryComponent.mapIndexes());
         mav.addObject("list", list);
         mav.addObject("page", page);
         mav.addObject("moreGoods", "/WebShop/price/" + low + "/" + high);
@@ -129,17 +127,17 @@ public class IndexController {
             page = 1;
         }
         ModelAndView mav = new ModelAndView("index");
-        Category cat = id != 0 ? cacheCat.getCategory(id) : new Category();
-        Map<Category, List<Category>> map = cacheCat.getTreeCategories(id);
+        Category cat = id != 0 ? categoryComponent.getCategory(id) : new Category();
+        Map<Category, List<Category>> map = categoryComponent.buildTreeForWeb(id);
         if (map.values().size() == 1) {
             cat.setName("");
         }
-        List<Product> list = cacheProd.getCachedProductsByCategory(page, PAGE_SIZE, id);
+        List<Product> list = prodComponent.getProductsByCategory(page, PAGE_SIZE, id);
         mav.addObject("page", page);
         mav.addObject("list", list);
-        mav.addObject("manMap", cacheMan.mapIndexes());
-        mav.addObject("catMap", cacheCat.mapIndexes());
-        mav.addObject("listMan", cacheMan.allManufacturers());
+        mav.addObject("manMap", manufacturerComponent.mapIndexes());
+        mav.addObject("catMap", categoryComponent.mapIndexes());
+        mav.addObject("listMan", manufacturerComponent.getAllManufacturer());
         mav.addObject("catTreeMap", map);
         mav.addObject("catLabel", cat);
         mav.addObject("moreGoods", "/WebShop/category-next/" + id);
@@ -151,10 +149,10 @@ public class IndexController {
         log.info("GET-request on url */category-next/" + id);
         log.info("Loading next page by category page = " + page);
         ModelAndView mav = new ModelAndView("showcase");
-        List<Product> list = cacheProd.getCachedProductsByCategory(page, PAGE_SIZE, id);
+        List<Product> list = prodComponent.getProductsByCategory(page, PAGE_SIZE, id);
         mav.addObject("page", page);
-        mav.addObject("manMap", cacheMan.mapIndexes());
-        mav.addObject("catMap", cacheCat.mapIndexes());
+        mav.addObject("manMap", manufacturerComponent.mapIndexes());
+        mav.addObject("catMap", categoryComponent.mapIndexes());
         mav.addObject("list", list);
         mav.addObject("moreGoods", "/WebShop/category-next/" + id);
         return mav;

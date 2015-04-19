@@ -7,6 +7,7 @@ package com.tyrin.services;
 
 import com.tyrin.beans.Manufacturer;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -24,4 +25,5 @@ public interface IManufacturerService {
 
     public List<Manufacturer> getAllManufacturer();
 
+    public Map<Integer, String> mapIndexes();
 }

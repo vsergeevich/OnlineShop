@@ -143,6 +143,16 @@ public class CategoryRestClient implements ICategoryService {
             throw new DBException(e.getMessage());
         }
     }
+
+    @Override
+    public Map<Integer, String> mapIndexes() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Map<Category, List<Category>> buildTreeForWeb(int parent) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
 
 //    @Override

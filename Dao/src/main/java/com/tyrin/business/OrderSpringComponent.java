@@ -10,17 +10,17 @@ import com.tyrin.services.IOrderService;
 import com.tyrin.dao.OrderDao;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
 
 /**
  *
- * @author fits-dev
+ * @author user
  */
-@Component
+@Service
 public class OrderSpringComponent implements IOrderService {
 
     @Autowired

@@ -9,14 +9,8 @@
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
-    <context:component-scan base-package="com.tyrin.rest"/>
-    <context:component-scan base-package="com.tyrin.controllers"/>
-    <context:component-scan base-package="com.tyrin.exceptioncontrollers"/>
-    <context:component-scan base-package="com.tyrin.cache"/>
+    <context:component-scan base-package="com.tyrin"/>
     
-    
-    
-    <!--Тут мы указываем спрингу, где ему искать ковертер для сообшений(ЖСОН - ЭНТИТИ)-->
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean id="jacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">

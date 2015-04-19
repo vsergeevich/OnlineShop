@@ -5,23 +5,24 @@
  */
 package com.tyrin.business;
 
-import com.tyrin.cache.CacheProducts;
 import com.tyrin.beans.Product;
 import com.tyrin.services.IProductService;
 import com.tyrin.dao.ProductDao;
+import static java.lang.Math.min;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Tyrin V. S.
  */
-@Component
+@Service
 public class ProductSpringComponent implements IProductService {
 
     @Autowired
@@ -31,7 +32,6 @@ public class ProductSpringComponent implements IProductService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public synchronized void addProduct(Product prod) {
-        CacheProducts.cleanCache();
         productDao.addProduct(prod);
         log.info("Product " + prod.getName() + " is added");
     }
@@ -44,15 +44,13 @@ public class ProductSpringComponent implements IProductService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public synchronized void updateProduct(Product prod) {
-        CacheProducts.cleanCache();
         productDao.updateProduct(prod);
-        log.info("Product " + prod.getName()+ " is updated");
+        log.info("Product " + prod.getName() + " is updated");
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public synchronized void deleteProduct(int prodId) {
-        CacheProducts.cleanCache();
         productDao.deleteProduct(prodId);
         log.info("Product " + prodId + " is deleted");
     }
@@ -62,9 +60,24 @@ public class ProductSpringComponent implements IProductService {
         return productDao.getProductByCategory(catId);
     }
 
+    public List<Product> getProductsByCategory(int page, int pageSize, int categoryId) {
+        List<Product> listByCategory;
+        if (categoryId == 0) {
+            return productDao.getAllProduct(page, pageSize);
+        } else {
+            listByCategory = productDao.getProductByCategoryWithChildren(categoryId);
+        }
+        return listByCategory.subList((page - 1) * pageSize, min(page * pageSize, listByCategory.size()));
+    }
+
     @Override
     public synchronized List<Product> getProductByManufacturer(int manId) {
         return productDao.getProductByManufacturer(manId);
+    }
+
+    @Override
+    public synchronized List<Product> getProductsByManufacturer(int page, int pageSize, int manufacturerId) {
+        return productDao.getProductByManufacturer(page, pageSize, manufacturerId);
     }
 
     @Override
@@ -73,19 +86,49 @@ public class ProductSpringComponent implements IProductService {
     }
 
     @Override
-    public synchronized List<Product> searchProductOnPrice(int low, int high) {
+    public synchronized List<Product> getProductsByPrice(int low, int high) {
         List<Product> list = productDao.searchProductOnPrice(low, high);
-        System.out.println(list.getClass());
+        return list;
+    }
+
+    @Override
+    public synchronized List<Product> getProductsByPrice(int page, int pageSize, int low, int high) {
+        return productDao.searchProductOnPrice(page, pageSize, low, high);
+    }
+
+    @Override
+    public synchronized List<Product> getProductsByCategoryAndManufacturer(int page, int pageSize, int categoryId, int manId) {
+        if (categoryId == 0) {
+            return getProductsByManufacturer(page, pageSize, manId);
+        }
+        List<Product> listByCategoryAndManufacturer = productDao.getProductByCategoryAndManufacturer(categoryId, manId);
+        log.info("Return products by category " + categoryId + " and manufacturer " + manId);
+        return listByCategoryAndManufacturer.subList((page - 1) * pageSize, min(page * pageSize, listByCategoryAndManufacturer.size()));
+    }
+
+    @Override
+    public synchronized List<Product> getProductsByCategoryAndPrice(int page, int pageSize, int categoryId, int[] priceRange) {
+        if (categoryId == 0) {
+            return getProductsByPrice(page, pageSize, priceRange[0], priceRange[1]);
+        }
+        List<Product> listByCategoryAndPrice = productDao.getProductByCategoryAndPrice(categoryId, priceRange[0], priceRange[1]);
+        log.info("Return products by category " + categoryId + " and price range " + Arrays.toString(priceRange));
+        return listByCategoryAndPrice.subList((page - 1) * pageSize, min(page * pageSize, listByCategoryAndPrice.size()));
+    }
+
+    @Override
+    public synchronized List<Product> getAllProduct(int page, int pageSize) {
+        List<Product> list = productDao.getAllProduct(page, pageSize);
         return list;
     }
 
     @Override
     public synchronized List<Product> getAllProduct() {
         List<Product> list = productDao.getAllProduct();
-        System.out.println(list.getClass());
         return list;
     }
 
+    @Override
     public synchronized List<Product> getProductByCategoryWithChildren(int catId) {
         if (catId == 0) {
             return productDao.getAllProduct();

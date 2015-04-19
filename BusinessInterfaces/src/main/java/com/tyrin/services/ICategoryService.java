@@ -26,5 +26,9 @@ public interface ICategoryService {
     public List<Category> getAllCategory();
 
     public Map<String, String> getCategoryTree();
+    
+    public Map<Integer, String> mapIndexes();
+    
+    public Map<Category, List<Category>> buildTreeForWeb(int parent);
 
 }

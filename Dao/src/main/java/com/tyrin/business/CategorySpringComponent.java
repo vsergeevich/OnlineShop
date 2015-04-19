@@ -5,25 +5,24 @@
  */
 package com.tyrin.business;
 
-import com.tyrin.cache.CacheCategories;
-import com.tyrin.cache.CacheProducts;
 import com.tyrin.beans.Category;
 import com.tyrin.services.ICategoryService;
 import com.tyrin.dao.CategoryDao;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Tyrin V. S.
  */
-@Component
+@Service
 public class CategorySpringComponent implements ICategoryService {
 
     @Autowired
@@ -33,9 +32,8 @@ public class CategorySpringComponent implements ICategoryService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public synchronized void addCategory(Category cat) {
-        CacheCategories.cleanCache();
         categoryDao.addCategory(cat);
-        log.info("Category " + cat.getName()+ " is added to database");
+        log.info("Category " + cat.getName() + " is added to database");
     }
 
     @Override
@@ -48,9 +46,7 @@ public class CategorySpringComponent implements ICategoryService {
     @Transactional(propagation = Propagation.REQUIRED)
     public synchronized void updateCategory(Category cat) {
         categoryDao.updateCategory(cat);
-        log.info("Category " + cat.getName()+ " is updated");
-        CacheProducts.cleanCache();
-        CacheCategories.cleanCache();
+        log.info("Category " + cat.getName() + " is updated");
     }
 
     @Override
@@ -68,13 +64,23 @@ public class CategorySpringComponent implements ICategoryService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public synchronized void deleteCategory(int catId) {
-        CacheProducts.cleanCache();
-        CacheCategories.cleanCache();
         categoryDao.deleteCategory(catId);
         log.info("Category " + catId + " is deleteded");
     }
 
+    @Override
     public Map<Category, List<Category>> buildTreeForWeb(int parent) {
         return categoryDao.buildTreeForWeb(parent);
     }
+
+    @Override
+    public Map<Integer, String> mapIndexes() {
+        Map<Integer, String> mapIndex = new HashMap<>();
+        List<Category> list = categoryDao.getAllCategory();
+        for (Category cat : list) {
+            mapIndex.put(cat.getId(), cat.getName());
+        }
+        return mapIndex;
+    }
+
 }

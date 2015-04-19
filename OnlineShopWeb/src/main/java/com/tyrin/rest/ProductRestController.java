@@ -93,7 +93,7 @@ public class ProductRestController {
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody List<Product> searchProductOnPrice(@PathVariable int low, @PathVariable int high) {
         log.info("GET-request on url */admin/product/on-price/" + low + "/" + high);
-        return prodComponent.searchProductOnPrice(low, high);
+        return prodComponent.getProductsByPrice(low, high);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
