@@ -31,39 +31,39 @@ public class CategorySpringComponent implements ICategoryService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public synchronized void addCategory(Category cat) {
+    public void addCategory(Category cat) {
         categoryDao.addCategory(cat);
         log.info("Category " + cat.getName() + " is added to database");
     }
 
     @Override
-    public synchronized Category getCategory(int catId) {
+    public Category getCategory(int catId) {
         log.info("Get category, id = " + catId);
         return categoryDao.getCategory(catId);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public synchronized void updateCategory(Category cat) {
+    public void updateCategory(Category cat) {
         categoryDao.updateCategory(cat);
         log.info("Category " + cat.getName() + " is updated");
     }
 
     @Override
-    public synchronized List<Category> getAllCategory() {
+    public List<Category> getAllCategory() {
         log.info("Get all category");
         return categoryDao.getAllCategory();
     }
 
     @Override
-    public synchronized Map<String, String> getCategoryTree() {
+    public Map<String, String> getCategoryTree() {
         log.info("Get category tree");
         return categoryDao.getCategoryTree();
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public synchronized void deleteCategory(int catId) {
+    public void deleteCategory(int catId) {
         categoryDao.deleteCategory(catId);
         log.info("Category " + catId + " is deleteded");
     }

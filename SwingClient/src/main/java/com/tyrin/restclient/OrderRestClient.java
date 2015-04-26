@@ -43,17 +43,17 @@ public class OrderRestClient implements IOrderService {
     }
 
     @Override
-    public synchronized void addOrder(Order order) {
+    public void addOrder(Order order) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public synchronized Order getOrder(int orderID) {
+    public Order getOrder(int orderID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public synchronized List<Order> getAllOrders() {
+    public List<Order> getAllOrders() {
         String url = siteUrl + "/admin/order";
         ResponseEntity<Order[]> response;
         HttpEntity<String> request = new HttpEntity<>(headers);

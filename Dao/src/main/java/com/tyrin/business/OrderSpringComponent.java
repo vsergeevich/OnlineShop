@@ -29,18 +29,18 @@ public class OrderSpringComponent implements IOrderService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public synchronized void addOrder(Order order) {
+    public void addOrder(Order order) {
         log.info("Order " + order.getOrderID() + " is added");
         orderDao.addOrder(order);
     }
 
     @Override
-    public synchronized Order getOrder(int orderID) {
+    public Order getOrder(int orderID) {
         return orderDao.getOrder(orderID);
     }
 
     @Override
-    public synchronized List<Order> getAllOrders() {
+    public List<Order> getAllOrders() {
         return orderDao.getAllOrders();
     }
 

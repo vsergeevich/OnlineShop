@@ -31,32 +31,32 @@ public class ProductSpringComponent implements IProductService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public synchronized void addProduct(Product prod) {
+    public void addProduct(Product prod) {
         productDao.addProduct(prod);
         log.info("Product " + prod.getName() + " is added");
     }
 
     @Override
-    public synchronized Product getProduct(int prodID) {
+    public Product getProduct(int prodID) {
         return productDao.getProduct(prodID);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public synchronized void updateProduct(Product prod) {
+    public void updateProduct(Product prod) {
         productDao.updateProduct(prod);
         log.info("Product " + prod.getName() + " is updated");
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public synchronized void deleteProduct(int prodId) {
+    public void deleteProduct(int prodId) {
         productDao.deleteProduct(prodId);
         log.info("Product " + prodId + " is deleted");
     }
 
     @Override
-    public synchronized List<Product> getProductByCategory(int catId) {
+    public List<Product> getProductByCategory(int catId) {
         return productDao.getProductByCategory(catId);
     }
 
@@ -71,33 +71,33 @@ public class ProductSpringComponent implements IProductService {
     }
 
     @Override
-    public synchronized List<Product> getProductByManufacturer(int manId) {
+    public List<Product> getProductByManufacturer(int manId) {
         return productDao.getProductByManufacturer(manId);
     }
 
     @Override
-    public synchronized List<Product> getProductsByManufacturer(int page, int pageSize, int manufacturerId) {
+    public List<Product> getProductsByManufacturer(int page, int pageSize, int manufacturerId) {
         return productDao.getProductByManufacturer(page, pageSize, manufacturerId);
     }
 
     @Override
-    public synchronized List<Product> searchProduct(String mask) {
+    public List<Product> searchProduct(String mask) {
         return productDao.searchProduct(mask);
     }
 
     @Override
-    public synchronized List<Product> getProductsByPrice(int low, int high) {
+    public List<Product> getProductsByPrice(int low, int high) {
         List<Product> list = productDao.searchProductOnPrice(low, high);
         return list;
     }
 
     @Override
-    public synchronized List<Product> getProductsByPrice(int page, int pageSize, int low, int high) {
+    public List<Product> getProductsByPrice(int page, int pageSize, int low, int high) {
         return productDao.searchProductOnPrice(page, pageSize, low, high);
     }
 
     @Override
-    public synchronized List<Product> getProductsByCategoryAndManufacturer(int page, int pageSize, int categoryId, int manId) {
+    public List<Product> getProductsByCategoryAndManufacturer(int page, int pageSize, int categoryId, int manId) {
         if (categoryId == 0) {
             return getProductsByManufacturer(page, pageSize, manId);
         }
@@ -107,7 +107,7 @@ public class ProductSpringComponent implements IProductService {
     }
 
     @Override
-    public synchronized List<Product> getProductsByCategoryAndPrice(int page, int pageSize, int categoryId, int[] priceRange) {
+    public List<Product> getProductsByCategoryAndPrice(int page, int pageSize, int categoryId, int[] priceRange) {
         if (categoryId == 0) {
             return getProductsByPrice(page, pageSize, priceRange[0], priceRange[1]);
         }
@@ -117,19 +117,19 @@ public class ProductSpringComponent implements IProductService {
     }
 
     @Override
-    public synchronized List<Product> getAllProduct(int page, int pageSize) {
+    public List<Product> getAllProduct(int page, int pageSize) {
         List<Product> list = productDao.getAllProduct(page, pageSize);
         return list;
     }
 
     @Override
-    public synchronized List<Product> getAllProduct() {
+    public List<Product> getAllProduct() {
         List<Product> list = productDao.getAllProduct();
         return list;
     }
 
     @Override
-    public synchronized List<Product> getProductByCategoryWithChildren(int catId) {
+    public List<Product> getProductByCategoryWithChildren(int catId) {
         if (catId == 0) {
             return productDao.getAllProduct();
         } else {

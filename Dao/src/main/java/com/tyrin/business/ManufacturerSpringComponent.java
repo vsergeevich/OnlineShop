@@ -31,32 +31,32 @@ public class ManufacturerSpringComponent implements IManufacturerService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public synchronized void addManufacturer(Manufacturer man) {
+    public void addManufacturer(Manufacturer man) {
         manufacturerDao.addManufacturer(man);
         log.info("Manufacturer " + man.getName()+ " is added to db");
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public synchronized void deleteManufacturer(int manId) {
+    public void deleteManufacturer(int manId) {
         manufacturerDao.deleteManufacturer(manId);
         log.info("Manufacturer " + manId + " is deleted from db");
     }
 
     @Override
-    public synchronized Manufacturer getManufacturer(int manId) {
+    public Manufacturer getManufacturer(int manId) {
         return manufacturerDao.getManufacturer(manId);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public synchronized void updateManufactutrer(Manufacturer man) {
+    public void updateManufactutrer(Manufacturer man) {
         manufacturerDao.updateManufactutrer(man);
         log.info("Manufacturer " + man.getName()+ " is updated");
     }
 
     @Override
-    public synchronized List<Manufacturer> getAllManufacturer() {
+    public List<Manufacturer> getAllManufacturer() {
         return manufacturerDao.getAllManufacturer();
     }
     

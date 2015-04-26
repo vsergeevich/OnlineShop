@@ -44,7 +44,7 @@ public class ProductRestClient implements IProductService {
     }
 
     @Override
-    public synchronized void addProduct(Product prod) {
+    public void addProduct(Product prod) {
         String url = siteUrl + "/admin/product";
         HttpEntity<Product> request = new HttpEntity<>(prod, headers);
         ResponseEntity<String> response;
@@ -60,7 +60,7 @@ public class ProductRestClient implements IProductService {
     }
 
     @Override
-    public synchronized void updateProduct(Product prod) {
+    public void updateProduct(Product prod) {
         String url = siteUrl + "/admin/product/{id}";
         ResponseEntity<String> response;
         HttpEntity<Product> request = new HttpEntity<>(prod, headers);
@@ -76,7 +76,7 @@ public class ProductRestClient implements IProductService {
     }
 
     @Override
-    public synchronized Product getProduct(int id) {
+    public Product getProduct(int id) {
         String url = "/admin/product/{id}";
         ResponseEntity<Product> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -93,7 +93,7 @@ public class ProductRestClient implements IProductService {
     }
 
     @Override
-    public synchronized void deleteProduct(int id) {
+    public void deleteProduct(int id) {
         String url = siteUrl + "/admin/product/{id}";
         ResponseEntity<String> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -109,7 +109,7 @@ public class ProductRestClient implements IProductService {
     }
 
     @Override
-    public synchronized List<Product> getProductByCategory(int id) {
+    public List<Product> getProductByCategory(int id) {
         String url = siteUrl + "/admin/product/by-category/{id}";
         ResponseEntity<Product[]> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -126,7 +126,7 @@ public class ProductRestClient implements IProductService {
     }
 
     @Override
-    public synchronized List<Product> getProductByManufacturer(int id) {
+    public List<Product> getProductByManufacturer(int id) {
         String url = siteUrl + "/admin/product/by-manufacturer/{id}";
         ResponseEntity<Product[]> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -143,7 +143,7 @@ public class ProductRestClient implements IProductService {
     }
 
     @Override
-    public synchronized List<Product> searchProduct(String mask) {
+    public List<Product> searchProduct(String mask) {
         String url = siteUrl + "/admin/product/search/{mask}";
         ResponseEntity<Product[]> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -160,7 +160,7 @@ public class ProductRestClient implements IProductService {
     }
 
     @Override
-    public synchronized List<Product> getProductsByPrice(int low, int high) {
+    public List<Product> getProductsByPrice(int low, int high) {
         String url = siteUrl + "/admin/product/on-price/{low}/{high}";
         ResponseEntity<Product[]> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -177,7 +177,7 @@ public class ProductRestClient implements IProductService {
     }
 
     @Override
-    public synchronized List<Product> getAllProduct() {
+    public List<Product> getAllProduct() {
         String url = siteUrl + "/admin/product";
         ResponseEntity<Product[]> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -193,7 +193,7 @@ public class ProductRestClient implements IProductService {
         return Arrays.asList(response.getBody());
     }
      @Override
-    public synchronized List<Product> getAllProduct(int page, int pageSize) {
+    public List<Product> getAllProduct(int page, int pageSize) {
         throw new UnsupportedOperationException();
     }
 

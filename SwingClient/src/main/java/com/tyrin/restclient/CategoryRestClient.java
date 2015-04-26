@@ -45,7 +45,7 @@ public class CategoryRestClient implements ICategoryService {
     }
 
     @Override
-    public synchronized void addCategory(Category cat) {
+    public void addCategory(Category cat) {
         String url = siteUrl + "/admin/category";
         HttpEntity<Category> request = new HttpEntity<>(cat, headers);
         ResponseEntity<String> response;
@@ -62,7 +62,7 @@ public class CategoryRestClient implements ICategoryService {
     }
 
     @Override
-    public synchronized Category getCategory(int id) {
+    public Category getCategory(int id) {
         String url = "/admin/category/{id}";
         ResponseEntity<Category> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -79,7 +79,7 @@ public class CategoryRestClient implements ICategoryService {
     }
 
     @Override
-    public synchronized void updateCategory(Category cat) {
+    public void updateCategory(Category cat) {
         String url = siteUrl + "/admin/category/{id}";
         ResponseEntity<String> response;
         HttpEntity<Category> request = new HttpEntity<>(cat, headers);
@@ -95,7 +95,7 @@ public class CategoryRestClient implements ICategoryService {
     }
 
     @Override
-    public synchronized List<Category> getAllCategory() {
+    public List<Category> getAllCategory() {
         String url = siteUrl + "/admin/category";
         ResponseEntity<Category[]> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -112,7 +112,7 @@ public class CategoryRestClient implements ICategoryService {
     }
 
     @Override
-    public synchronized Map<String, String> getCategoryTree() {
+    public Map<String, String> getCategoryTree() {
         String url = siteUrl + "/admin/category/get-tree";
         ResponseEntity<HashMap> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -129,7 +129,7 @@ public class CategoryRestClient implements ICategoryService {
     }
 
     @Override
-    public synchronized void deleteCategory(int id) {
+    public void deleteCategory(int id) {
         String url = siteUrl + "/admin/category/{id}";
         ResponseEntity<String> response;
         HttpEntity<String> request = new HttpEntity<>(headers);

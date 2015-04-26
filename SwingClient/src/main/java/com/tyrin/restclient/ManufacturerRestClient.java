@@ -44,7 +44,7 @@ public class ManufacturerRestClient implements IManufacturerService {
     }
 
     @Override
-    public synchronized Manufacturer getManufacturer(int id) {
+    public Manufacturer getManufacturer(int id) {
         String url = "/admin/manufacturer/{id}";
         ResponseEntity<Manufacturer> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -61,7 +61,7 @@ public class ManufacturerRestClient implements IManufacturerService {
     }
 
     @Override
-    public synchronized List<Manufacturer> getAllManufacturer() {
+    public List<Manufacturer> getAllManufacturer() {
         String url = siteUrl + "/admin/manufacturer";
         ResponseEntity<Manufacturer[]> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -78,7 +78,7 @@ public class ManufacturerRestClient implements IManufacturerService {
     }
 
     @Override
-    public synchronized void updateManufactutrer(Manufacturer man) {
+    public void updateManufactutrer(Manufacturer man) {
         String url = siteUrl + "/admin/manufacturer/{id}";
         ResponseEntity<String> response;
         HttpEntity<Manufacturer> request = new HttpEntity<>(man, headers);
@@ -94,7 +94,7 @@ public class ManufacturerRestClient implements IManufacturerService {
     }
 
     @Override
-    public synchronized void addManufacturer(Manufacturer man) {
+    public void addManufacturer(Manufacturer man) {
         String url = siteUrl + "/admin/manufacturer";
         HttpEntity<Manufacturer> request = new HttpEntity<>(man, headers);
         ResponseEntity<String> response;
@@ -110,7 +110,7 @@ public class ManufacturerRestClient implements IManufacturerService {
     }
 
     @Override
-    public synchronized void deleteManufacturer(int id) {
+    public void deleteManufacturer(int id) {
         String url = siteUrl + "/admin/manufacturer/{id}";
         ResponseEntity<String> response;
         HttpEntity<String> request = new HttpEntity<>(headers);
