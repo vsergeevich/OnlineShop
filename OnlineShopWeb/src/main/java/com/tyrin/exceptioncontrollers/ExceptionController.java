@@ -32,7 +32,7 @@ public class ExceptionController {
 
     @ExceptionHandler(Exception.class)
     public ModelAndView handleAllException(Exception ex) {
-        log.error(ex.getMessage());
+        log.error(ex.toString());
         ModelAndView model = new ModelAndView("errors/unknownError");
         model.addObject("ex", ex);
         return model;

@@ -6,58 +6,39 @@
 package com.tyrin.dao;
 
 import com.tyrin.beans.Order;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
+
 /**
  *
  * @author fits-dev
  */
 @Repository
 public class OrderDao {
-
+    
     @Autowired
     private JdbcTemplate template;
     private static final Log log = LogFactory.getLog(OrderDao.class);
-
-    class OrderMapper implements RowMapper<Order> {
-
-        @Override
-        public Order mapRow(ResultSet rs, int i) throws SQLException {
-            Order order = new Order();
-            order.setOrderID(rs.getInt("order_id"));
-            order.setProductID(rs.getInt("order_prodID"));
-            order.setFio(rs.getString("fio"));
-            order.setMail(rs.getString("mail"));
-            order.setPhone(rs.getString("phone"));
-            order.setAdress(rs.getString("address"));
-            return order;
+    
+    public void addOrderItems(Order order) {
+        template.update("INSERT INTO Purchase(fio, mail, phone, address) "
+                + "VALUES (?, ?, ?, ?)", order.getFio(), order.getMail(), order.getPhone(), order.getAdress());
+        int generatedValue = template.queryForInt("select last_insert_id()");
+        for (int id : order.getListProductsId()) {
+            template.update("INSERT INTO OrderItems(order_id, prod_id) "
+                    + "VALUES (?, ?)", generatedValue, id);
         }
+//    public List<OrderItem> getOrederItems() {
+//        return template.query("SELECT * FROM Orders", new RowMapper<OrderItem>() {
+//
+//            @Override
+//            public OrderItem mapRow(ResultSet rs, int i) throws SQLException {
+//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//            }
+//            
+//        });
     }
-    
-    public Order getOrder(int orderID) {
-        return template.queryForObject("SELECT * FROM Orders "
-                                     + "WHERE order_id = ?", new OrderMapper(), orderID);
-    }
-    
-    public List<Order> getAllOrders() {
-        return template.query("SELECT * FROM Orders", new OrderMapper());
-    }
-    
-    public void addOrder(Order order) {
-        template.update("AddOrder ?,?,?,?,?", order.getProductID(), order.getFio(), order.getMail(), 
-                                              order.getPhone(), order.getAdress());
-    }
-    
-    public void delOrder(int orderID) {
-        template.update("DELETE FROM Orders "
-                      + "WHERE order_id = ?", orderID);
-    }
-
 }

@@ -25,7 +25,7 @@ public class AdminController {
     @RequestMapping("/delete/{orderID}")
     public String delProducts(@PathVariable int orderID) {
         log.info("Deleting order with id =" + orderID);
-        orderComp.delOrder(orderID);
+//        orderComp.delOrder(orderID);
         return "redirect:/admin";
     }
 }

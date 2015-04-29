@@ -85,7 +85,7 @@ public class Menu extends JMenuBar {
         jmiOrders.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                GetNewPanels.changePanel(new OrdersPanel().getPanel());
+//                GetNewPanels.changePanel(new OrdersPanel().getPanel());
             }
         });
     }

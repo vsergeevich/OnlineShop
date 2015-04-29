@@ -8,15 +8,18 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
+<%@ page isELIgnored="false"%>
+<%@ page session="true" %>
 <!-- Modal window-->
-<form role="form" id="orderProduct" product="" action="order.htm" >
+<form role="form" id="orderProduct" list7p="" >
     <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="myModalLabel"><spring:message code="label.order"/></h4>
+                        <div id ="cartItems">
+                            </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group" style="display: block">

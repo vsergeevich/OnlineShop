@@ -56,7 +56,8 @@
                                     <p><span class="label label-success"><spring:message code="label.availtrue"/></span></p>
                                     </c:if>
 
-                                <button type="button" onclick="orderModal(this.id)" id="${product.id}" class="btn btn-sm btn-default"><spring:message code="label.buy"/></button>
+                                <button type="button" onclick="addToCart(this.id)" id="${product.id}" class="btn btn-sm btn-default"><spring:message code="label.buy"/></button>
+                                <!--<button type="button" onclick="orderModal(this.id)" id="${product.id}" class="btn btn-sm btn-default"><spring:message code="label.buy"/></button>-->
 
                             </div>
                         </li>
@@ -109,7 +110,9 @@
                                     <p><span class="label label-success"><spring:message code="label.availtrue"/></span></p>
                                     </c:if>
 
-                                <button type="button" onclick="orderModal(this.id)" id="${product.id}" class="btn btn-sm btn-default"><spring:message code="label.buy"/></button>
+                                                                    <button type="button" onclick="addToCart(this.id)" id="${product.id}" class="btn btn-sm btn-default"><spring:message code="label.buy"/></button>
+
+                                <!--<button type="button" onclick="orderModal(this.id)" id="${product.id}" class="btn btn-sm btn-default"><spring:message code="label.buy"/></button>-->
 
                             </div>
                         </li>
@@ -160,7 +163,9 @@
                                     <c:if test="${product.available==1}">
                                     <p><span class="label label-success"><spring:message code="label.availtrue"/></span></p>
                                     </c:if>
-                                <button type="button" onclick="orderModal(this.id)" id="${product.id}" class="btn btn-sm btn-default"><spring:message code="label.buy"/></button>
+                                <!--<button type="button" onclick="orderModal(this.id)" id="${product.id}" class="btn btn-sm btn-default"><spring:message code="label.buy"/></button>-->
+                                                                    <button type="button" onclick="addToCart(this.id)" id="${product.id}" class="btn btn-sm btn-default"><spring:message code="label.buy"/></button>
+
                             </div>
                         </li>
                     </ul>

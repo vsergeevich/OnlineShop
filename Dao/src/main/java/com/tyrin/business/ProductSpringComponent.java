@@ -8,6 +8,7 @@ package com.tyrin.business;
 import com.tyrin.beans.Product;
 import com.tyrin.services.IProductService;
 import com.tyrin.dao.ProductDao;
+import com.tyrin.services.IProductServicePageable;
 import static java.lang.Math.min;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Service;
  * @author Tyrin V. S.
  */
 @Service
-public class ProductSpringComponent implements IProductService {
+public class ProductSpringComponent implements IProductServicePageable {
 
     @Autowired
     private ProductDao productDao;
@@ -60,6 +61,7 @@ public class ProductSpringComponent implements IProductService {
         return productDao.getProductByCategory(catId);
     }
 
+    @Override
     public List<Product> getProductsByCategory(int page, int pageSize, int categoryId) {
         List<Product> listByCategory;
         if (categoryId == 0) {

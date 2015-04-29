@@ -76,7 +76,7 @@ public class OrderTableModel implements TableModel {
         Order order = orderList.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return order.getOrderID();
+                return order.getId();
             case 1:
                 return order.getFio();
             case 2:

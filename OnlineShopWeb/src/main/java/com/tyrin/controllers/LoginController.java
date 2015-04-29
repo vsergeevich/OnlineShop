@@ -58,7 +58,6 @@ public class LoginController {
         model.addAttribute("listMan", manComp.getAllManufacturer());
         model.addAttribute("listCat", catComp.getAllCategory());
         model.addAttribute("listProd", prodComp.getAllProduct());
-        model.addAttribute("listOrder", orderComp.getAllOrders());
         log.info("Loaded admin page");
         return "admin";
     }

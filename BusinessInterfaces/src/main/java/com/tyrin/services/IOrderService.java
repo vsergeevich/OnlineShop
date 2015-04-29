@@ -6,19 +6,12 @@
 package com.tyrin.services;
 
 import com.tyrin.beans.Order;
-import java.util.List;
 
 /**
  *
- * @author fits-dev
+ * @author Tyrin V.S.
  */
 public interface IOrderService {
-
-    public void addOrder(Order order);
     
-    public Order getOrder(int orderID);
-    
-    public void delOrder(int orderID);
-    
-    public List<Order> getAllOrders(); 
+     public void addOrderItems(Order order);
 }

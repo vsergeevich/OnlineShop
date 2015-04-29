@@ -2,6 +2,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ page session="true" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -70,6 +72,7 @@
                     <form class="navbar-form navbar-right" id="gotoLogin" role="goToLogin" action="/WebShop/login.htm">
                         <button type="submit" class="btn btn-primary"><spring:message code="label.login"/></button>
                     </form>
+                    <button type="button" onclick="orderModal()" class="btn btn-sm btn-default"><img src="img/cart.jpg" height="40">Корзина</button>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="?lang=en"> <img src="<c:url value="/img/uk.png" />" alt=""/></a></li>
                         <li><a href="?lang=ru"><img src="<c:url value="/img/rus.png" />" alt=""/></a></li>

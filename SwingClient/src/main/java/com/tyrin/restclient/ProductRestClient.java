@@ -103,7 +103,7 @@ public class ProductRestClient implements IProductService {
             if (respCode >= 400) {
                 throw new DBException("Server error: " + respCode);
             }
-        }  catch (RestClientException | DBException e) {
+        } catch (RestClientException | DBException e) {
             throw new DBException(e);
         }
     }
@@ -191,35 +191,6 @@ public class ProductRestClient implements IProductService {
             throw new DBException(e.getMessage());
         }
         return Arrays.asList(response.getBody());
-    }
-     @Override
-    public List<Product> getAllProduct(int page, int pageSize) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public List<Product> getProductsByPrice(int page, int pageSize, int low, int high) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Product> getProductsByCategory(int page, int pageSize, int categoryId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Product> getProductsByManufacturer(int page, int pageSize, int manufacturerId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Product> getProductsByCategoryAndManufacturer(int page, int pageSize, int categoryId, int manId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Product> getProductsByCategoryAndPrice(int page, int pageSize, int categoryId, int[] priceRange) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

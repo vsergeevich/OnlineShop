@@ -27,15 +27,16 @@ $(document).ready(function () {
         var adress = document.getElementById('adress').value;
         var data = {productID: productID, fio: fio, mail: mail, phone: phone, adress: adress};
         $.ajax({
-            url: $("#orderProduct").attr("action"),
+            url: "/WebShop/buy.htm",
             data: data,
             type: 'GET',
             dataType: 'text',
             success: function () {
                 $('#orderModal').modal('hide');
+                $("#cartItems").remove();
                 document.getElementById("orderProduct").reset();
             },
-            error: function () {
+            error: function (jqXHR) {
                 console.info("error: " + jqXHR.status + ' ' + jqXHR.responseText);
             }
         });
@@ -86,10 +87,37 @@ function showMoreGoods(page) {
     event.preventDefault();
 }
 
-
-function orderModal(productID) {
-    document.getElementById('orderProduct').setAttribute('product', productID);
-    console.log($("#orderProduct").attr("product"));
-    $('#orderModal').modal();
+function addToCart(id) {
+    $.ajax({
+        url: "/WebShop/cart.htm",
+        data: {"id": id},
+        type: 'POST',
+        success: function () {
+            alert("Товар успешно добавлен в корзину");
+        },
+        error: function () {
+            alert("bad");
+        }
+    });
+    event.preventDefault();
 }
+
+
+function orderModal() {
+    $.ajax({
+        url: "/WebShop/showcart.htm",
+        type: 'GET',
+        dataType: 'text',
+        success: function (rez) {
+            $("#cartItems").html(rez);
+            $('#orderModal').modal();
+        },
+        error: function (rez) {
+            $("#cartItems").html(rez);
+            $('#orderModal').modal();
+        }
+    });
+    event.preventDefault();
+}
+
 

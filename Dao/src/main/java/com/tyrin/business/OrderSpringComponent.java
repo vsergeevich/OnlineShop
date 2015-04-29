@@ -8,13 +8,13 @@ package com.tyrin.business;
 import com.tyrin.beans.Order;
 import com.tyrin.services.IOrderService;
 import com.tyrin.dao.OrderDao;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 
 /**
  *
@@ -27,27 +27,10 @@ public class OrderSpringComponent implements IOrderService {
     private OrderDao orderDao;
     private static final Log log = LogFactory.getLog(OrderSpringComponent.class);
 
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void addOrder(Order order) {
-        log.info("Order " + order.getOrderID() + " is added");
-        orderDao.addOrder(order);
-    }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     @Override
-    public Order getOrder(int orderID) {
-        return orderDao.getOrder(orderID);
+    public void addOrderItems(Order order) {
+        orderDao.addOrderItems(order);
     }
-
-    @Override
-    public List<Order> getAllOrders() {
-        return orderDao.getAllOrders();
-    }
-
-    @Override
-    public void delOrder(int orderID) {
-        orderDao.delOrder(orderID);
-        log.info("Order " + orderID + " is deleted");
-    }
-
 }

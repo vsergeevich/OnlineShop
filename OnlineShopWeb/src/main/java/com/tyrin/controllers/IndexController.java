@@ -9,7 +9,7 @@ import com.tyrin.beans.Category;
 import com.tyrin.beans.Product;
 import com.tyrin.services.ICategoryService;
 import com.tyrin.services.IManufacturerService;
-import com.tyrin.services.IProductService;
+import com.tyrin.services.IProductServicePageable;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.logging.Log;
@@ -37,7 +37,7 @@ public class IndexController {
     private static final Log log = LogFactory.getLog(IndexController.class);
     @Autowired
     @Qualifier("productSpringComponent")
-    IProductService prodComponent;
+    IProductServicePageable prodComponent;
     @Autowired
     @Qualifier("categorySpringComponent")
     ICategoryService categoryComponent;
@@ -60,6 +60,7 @@ public class IndexController {
         String view = "index";
         return view;
     }
+   
 
     @RequestMapping(value = "/all-products", method = RequestMethod.GET)
     public ModelAndView nextPageOfProducts(@RequestParam int page) {

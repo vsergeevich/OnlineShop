@@ -42,17 +42,17 @@ public class OrderRestClient implements IOrderService {
         };
     }
 
-    @Override
+//    @Override
     public void addOrder(Order order) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
+//    @Override
     public Order getOrder(int orderID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
+//    @Override
     public List<Order> getAllOrders() {
         String url = siteUrl + "/admin/order";
         ResponseEntity<Order[]> response;
@@ -71,7 +71,7 @@ public class OrderRestClient implements IOrderService {
 
     }
 
-    @Override
+//    @Override
     public void delOrder(int orderID) {
         String url = siteUrl + "/admin/order/{id}";
         ResponseEntity<String> response;
@@ -85,6 +85,11 @@ public class OrderRestClient implements IOrderService {
         } catch (RestClientException | DBException e) {
             throw new DBException(e.getMessage());
         }
+    }
+
+    @Override
+    public void addOrderItems(Order order) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
